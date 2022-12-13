@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blogs.CMS", "Blogs.CMS\Blogs.CMS.csproj", "{4725BA47-954F-47B7-9BF0-C1CABAF3C46F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blogs.CMS", "Blogs.CMS\Blogs.CMS.csproj", "{4725BA47-954F-47B7-9BF0-C1CABAF3C46F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blogs.DataAccess", "Blogs.Lib\--force\Blogs.DataAccess\Blogs.DataAccess.csproj", "{1AD51E1E-23BF-44BB-9313-BE1B077A26BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{4725BA47-954F-47B7-9BF0-C1CABAF3C46F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4725BA47-954F-47B7-9BF0-C1CABAF3C46F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4725BA47-954F-47B7-9BF0-C1CABAF3C46F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AD51E1E-23BF-44BB-9313-BE1B077A26BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AD51E1E-23BF-44BB-9313-BE1B077A26BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AD51E1E-23BF-44BB-9313-BE1B077A26BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AD51E1E-23BF-44BB-9313-BE1B077A26BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

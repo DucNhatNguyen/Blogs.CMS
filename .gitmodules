@@ -1,0 +1,3 @@
+[submodule "Blogs.Lib/--force"]
+	path = Blogs.Lib/--force
+	url = https://github.com/DucNhatNguyen/Blogs.DataAccess.git
