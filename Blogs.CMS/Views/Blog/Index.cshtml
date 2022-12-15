@@ -1,0 +1,119 @@
+﻿@model IEnumerable<Blogs.CMS.Models.BlogGetModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Danh sách Blogs</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <button type="button" class="btn btn-success" onclick="showCreateModal()">
+                    Tạo
+                </button>
+
+            </div>
+            <div class="panel-body">
+                <span id="actionMessage"></span>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover" id="dataTables">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Thumnail</th>
+                                <th>Tiêu đề</th>
+                                <th>Trạng thái</th>
+                                <th>Mô tả ngắn</th>
+                                <th>Ngày công khai</th>
+                                <th>Tác giả</th>
+                                <th>Lượt xem</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var p in Model)
+                            {
+                                <tr>
+                                    <td>@p.Id</td>
+                                    <td>
+
+                                        <img src="https://drive.google.com/uc?export=view&id=@p.FileGoogleDriveId" height="100" width="100" alt="" />
+
+                                    </td>
+                                    <td>@p.Title</td>
+                                    <td>@p.StatusName</td>
+                                    <td>@p.SortDesc</td>
+                                    <td>@p.PublicDate</td>
+                                    <td>@p.Author</td>
+                                    <td>@p.View</td>
+                                    <td>
+                                        <button type="button" class="btn btn-info" onclick="showEditBlogForm(@p.Id)" data-toggle="modal" data-target="#createModal">
+                                            Sửa
+                                        </button>
+                                        <button type="button" class="btn btn-danger" onclick="showDeleteBlogModal(@p.Id)" data-toggle="modal" data-target="#createModal">
+                                            Xóa
+                                        </button>
+                                        <button type="button" class="btn btn-info" onclick="showCopyBlogModal(@p.Id)" data-toggle="modal" data-target="#createModal">
+                                            Copy
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if ((string?)TempData["NotificationType"] == "success")
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal("@TempData["Notification"]", '', "success");
+        };
+    </script>
+}
+else if ((string?)TempData["NotificationType"] == "error")
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal("Có gì đó sai sai", '', "error");
+        };
+    </script>
+}
+
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
+<script>
+
+    function showCreateModal() {
+        //location.href = "/Blog/Create";
+        location.href = "/blog/chi-tiet-blog";
+    }
+
+    function showEditBlogForm(id) {
+        location.href = "/blog/chi-tiet-blog/" + id;
+    }
+
+    function showDeleteBlogModal(id) {
+        $.get('@Url.Action("Delete", "Blog")', { id: id }, function (content) {
+            $(".modal-dialog-centered").html(content)
+        });
+    }
+
+    function showCopyBlogModal(id) {
+        $.get('@Url.Action("CopyBlog", "Blog")', { id: id }, function (content) {
+            $(".modal-dialog-centered").html(content)
+        });
+    }
+</script>

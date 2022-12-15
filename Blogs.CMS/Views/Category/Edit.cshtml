@@ -1,0 +1,110 @@
+﻿@model Blogs.CMS.Controllers.Params.EditCategoryParams
+
+@if ((string?)TempData["NotificationType"] == "success")
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal("@TempData["Notification"]", '', "success");
+        };
+    </script>
+}
+else if ((string?)TempData["NotificationType"] == "error")
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal("Có gì đó sai sai", '', "error");
+        };
+    </script>
+}
+
+<div class="modal-content">
+    <div class="modal-header border-bottom-0">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Chỉnh sửa chuyên mục</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Hãy nhập đầy đủ các trường bắt buộc dưới đây.
+                    </div>
+                    <div class="panel-body">
+                        @if (TempData["Notification"] != null)
+                        {
+                            @Html.Hidden("NotificationAutoHide", TempData["NotificationAutoHide"])
+                            <div id="NotificationBox" class="@TempData["NotificationCSS"]" style="display: none">
+                                @TempData["Notification"]
+                            </div>
+                        }
+                        <div class="row">
+                            <div class="col-lg-12">
+                                @using (Html.BeginForm("Edit", "Category", FormMethod.Post, new { @role = "form" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true)
+                                    @Html.HiddenFor(model => model.Id)
+
+                                    <div class="form-group">
+                                        <label>@Html.LabelFor(model => model.Title)</label>
+                                        @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Title)
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>@Html.LabelFor(model => model.Status)</label>
+                                        @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.ListStatus,"Trạng thái", new { @class = "form-control" })
+                                    </div>
+
+                                    @if (Model.IsParentCate)
+                                    {
+                                        <div class="form-group" id="ddl-parentCates" style="display: none;">
+                                            <label>@Html.LabelFor(model => model.ParentId)</label>
+                                            @Html.DropDownListFor(model => model.ParentId, (SelectList)ViewBag.ParentCates,"Chọn chuyên mục Cha", new { @class = "form-control"})
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="form-group" id="ddl-parentCates">
+                                            <label>@Html.LabelFor(model => model.ParentId)</label>
+                                            @Html.DropDownListFor(model => model.ParentId, (SelectList)ViewBag.ParentCates,"Chọn chuyên mục Cha", new { @class = "form-control"})
+                                        </div>
+                                    }
+
+                                    <div class="form-group">
+                                        <label>
+                                            @Html.LabelFor(model => model.IsParentCate)
+                                        </label>
+                                        @Html.CheckBoxFor(model => model.IsParentCate, new { @class = "checkbox", @checked = "checked", onclick = "ShowHideDiv(this)"})
+                                        @Html.ValidationMessageFor(model => model.IsParentCate)
+                                    </div>
+
+                                    <button type="submit" class="btn btn-info btn-block btn-round">Cập nhật</button>
+                                }
+                            </div>
+                        </div>
+                        <!-- /.row (nested) -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function ShowHideDiv(chkParentCate) {
+        $("#ParentId").val(0);
+        var dvParentCate = document.getElementById("ddl-parentCates");
+        dvParentCate.style.display = chkParentCate.checked ? "none" : "block";
+    }
+</script>

@@ -1,49 +1,119 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using Blogs.CMS.ViewComponents
+
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Blogs.CMS</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Blogs.CMS.styles.css" asp-append-version="true" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <link rel="icon" href="/favicon.ico">
+    <title>Blog CMS</title>
+    <!-- Core CSS - Include with every page -->
+
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>
+    <link href="~/css/themes/admin/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/css/themes/admin/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <!-- Page-Level Plugin CSS - Dashboard -->
+    <link href="~/css/themes/admin/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
+    <link href="~/css/themes/admin/css/plugins/timeline/timeline.css" rel="stylesheet">
+
+    <!-- SB Admin CSS - Include with every page -->
+    <link href="~/css/themes/base/jquery-ui.css" rel="stylesheet" />
+    <link href="~/css/themes/admin/css/sb-admin.css" rel="stylesheet">
+    <link href="~/css/themes/admin/css/custom.css" rel="stylesheet">
+    <!-- Page-Level Plugin CSS - Tables -->
+    <link href="~/css/themes/admin/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    @*@Styles.Render("~/themes/admin/common");
+    @Styles.Render("~/Content/themes/admin/dashboard");*@
+    <!-- Core Scripts - Include with every page -->
+    @*@Scripts.Render("~/bundles/adminjs")
+    @Scripts.Render("~/bundles/dashboardjs")*@
+    <!-- Core Scripts - Include with every page -->
+    <link media="screen" rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.css" />
+    <link media="screen" rel="stylesheet" href='https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.css' />
+
+    <link rel="stylesheet prefetch" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.js"></script>
+
+    <script src="~/Scripts/admin/bootstrap.min.js"></script>
+    <script src="~/Scripts/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <!-- SB Admin Scripts - Include with every page -->
+    <script src="~/Scripts/admin/sb-admin.js"></script>
+    <!-- Page-Level Plugin Scripts - Tables -->
+    <script src="~/Scripts/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="~/Scripts/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="~/Scripts/dialogmessage.js"></script>
+    <script src="~/Scripts/Plugins/ckfinder/ckfinder.js" type="text/javascript"></script>
+    <script src="~/Scripts/Plugins/ckeditor/ckeditor.js" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+
+    <link href="~/select2/css/select2.min.css" rel="stylesheet" />
+    <!-- select2-bootstrap4-theme -->
+    <link href="https://raw.githack.com/ttskch/select2-bootstrap4-theme/master/dist/select2-bootstrap4.css" rel="stylesheet">
+    <script src="~/select2/js/select2.js"></script>
+    <script src="~/select2/js/select2.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#dataTables').dataTable({
+                "iDisplayLength": 10,
+                "rowReorder": true,
+                "oSearch": {
+                    "sZeroRecords": "Không có bản ghi nào trong danh sách"
+                }
+            });
+            //$("#NotificationBox").fadeIn(1000);
+
+            //if ($("#NotificationAutoHide").val() == "true") {
+            //    $("#NotificationBox").delay(1000).slideUp(500);
+            //}
+
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //SetDialog();
+            //$("#btnSelectImg").click(function () {
+            //    var finder = new CKFinder();
+            //    finder.selectActionFunction = function (fileUrl) {
+            //        $('#txtImgUrl').val(fileUrl);
+            //    };
+            //    finder.popup();
+            //});
+            var editor = CKEDITOR.replace('contenteditor', {
+                customConfig: '/Scripts/Plugins/ckeditor/article.js',
+            });
+            $("#datepicker").datepicker({ dateFormat: 'dd/mm/yy' });
+        });
+
+    </script>
+
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Blogs.CMS</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <div id="wrapper">
+        @{
+            Html.RenderPartial("_TopNavBar");
+        }
+        @*
+        <partial name="_TopNavBar" />*@
+        <!-- /.navbar-static-top -->
+        <!-- /.navbar-static-top -->
+        @await Component.InvokeAsync(typeof(MenuViewComponents));
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - Blogs.CMS - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <!-- /.navbar-static-side -->
+
+        <div id="page-wrapper">
+            @RenderBody()
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+
 </body>
 </html>

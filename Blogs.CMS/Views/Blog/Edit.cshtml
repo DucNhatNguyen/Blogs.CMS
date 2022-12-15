@@ -1,0 +1,192 @@
+﻿@model Blogs.CMS.Controllers.Params.EditBlogParams
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    string linkThumbnail = $"/Images/{Model.Thumbnail}";
+}
+
+@if ((string?)TempData["NotificationType"] == "success")
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal("@TempData["Notification"]", '', "success");
+        };
+    </script>
+}
+else if ((string?)TempData["NotificationType"] == "error")
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal("Có gì đó sai sai", '', "error");
+        };
+    </script>
+}
+
+<style>
+    #datepicker {
+        width: 180px;
+        margin: 0 20px 20px 20px;
+    }
+
+        #datepicker > span:hover {
+            cursor: pointer;
+        }
+</style>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Chỉnh sửa Blog</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Hãy nhập đầy đủ các trường bắt buộc dưới đây
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    @using (Html.BeginForm("Edit", "Blog", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+                        @Html.HiddenFor(model => model.Id)
+                        @Html.HiddenFor(model => model.Thumbnail)
+                        @Html.HiddenFor(model => model.FileGoogleDriveId)
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>
+                                    @Html.LabelFor(model => model.Title)
+                                </label>
+                                @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Title)
+                            </div>
+
+                            <div class="form-group">
+                                <label>@Html.LabelFor(model => model.CateId)</label>
+                                @Html.DropDownListFor(model => model.CateId, (SelectList)ViewBag.ListCates, "Chọn chuyên mục", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.CateId)
+                            </div>
+
+                            <div class="form-group">
+                                <label>Hình thumbnail</label>
+                                <div class="avatar-upload">
+                                    <div class="avatar-edit">
+                                        <input type='file' id="ImageFile" name="ImageFile" accept=".png, .jpg, .jpeg" />
+                                        <label for="ImageFile"></label>
+                                    </div>
+                                    <div class="avatar-preview">
+                                        <div id="imagePrevieww">
+                                            @*style="background-image: url(@linkThumbnail);" *@
+                                            <img src="https://drive.google.com/uc?export=view&id=@Model.FileGoogleDriveId" id="imagePreview" alt="" style="width: 192px; height: 192px;" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>
+                                    @Html.LabelFor(model => model.Slug)
+                                </label>
+                                @Html.TextBoxFor(model => model.Slug, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Slug)
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    @Html.LabelFor(model => model.Status)
+                                </label>
+                                @Html.DropDownListFor(model => model.Status,
+                            new List<SelectListItem>()
+                            {
+                            new SelectListItem { Text = "Nháp", Value = "1" },
+                            new SelectListItem { Text = "Công khai", Value = "2" },
+                            new SelectListItem { Text = "Ẩn", Value = "3" },
+                            }, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Status)
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    @Html.LabelFor(model => model.Author)
+                                </label>
+                                @Html.TextBoxFor(model => model.Author, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Author)
+                            </div>
+
+                            <div class="form-group">
+                                <label>@Html.LabelFor(model => model.Tag)</label>
+                                @Html.DropDownListFor(model => model.Tag, (List<SelectListItem>)ViewBag.ListTags, "Chọn tag", htmlAttributes: new
+                            {
+                            @class = "form-control",
+                            @multiple="multiple",
+                            @id="Tag"
+                            })
+                                @Html.ValidationMessageFor(model => model.Tag)
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>
+                                    @Html.LabelFor(model => model.SortDesc)
+                                </label>
+                                @Html.TextAreaFor(model => model.SortDesc, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.SortDesc)
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    @Html.LabelFor(model => model.Content)
+                                </label>
+                                @Html.TextAreaFor(m => m.Content, new { @class = "w100p", @id = "contenteditor", @style = "height:600px" })
+                                @Html.ValidationMessageFor(model => model.Content)
+                            </div>
+
+                            <button type="submit" class="btn btn-default">Lưu</button>
+
+                            @Html.ActionLink("Trở về trang danh sách", "Index");
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('.datepicker').datepicker({
+        format: 'dd/MM/yyyy',
+        startDate: '-3d'
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                //$("#imagePreview").css(
+                //    "background-image",
+                //    "url(" + e.target.result + ")"
+                //);
+                $('#imagePreview').attr('src', e.target.result);
+                $("#imagePreview").hide();
+                $("#imagePreview").fadeIn(650);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $("#ImageFile").change(function () {
+        readURL(this);
+    });
+
+    $("#Tag").select2({
+        placeholder: "Chọn tag",
+        theme: "bootstrap4",
+        allowClear: true
+    });
+</script>
